@@ -1,0 +1,10 @@
+# Security headers for the static frontend (Workers Static Assets). Same policy the Node server used to send.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  Permissions-Policy: geolocation=(self), microphone=(self), camera=(), payment=()
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self' http://127.0.0.1:* http://localhost:*; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'none'
+
+/sw.js
+  Service-Worker-Allowed: /
+  Cache-Control: no-cache

@@ -1,0 +1,4 @@
+# Local secrets for `npm run dev` (copy to .dev.vars, which is git-ignored). Never commit real keys.
+ANTHROPIC_API_KEY=
+ADMIN_TOKEN=
+MAX_SHARED_SECRET=

@@ -1,0 +1,35 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "max",
+  "main": "worker.js",
+  "compatibility_date": "2025-09-01",
+
+  // Static frontend (PWA) is served straight from ./public by Workers Static Assets.
+  // The Worker runs ONLY for /api/* (run_worker_first). Unknown navigations fall back to index.html.
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+
+  "observability": { "enabled": true },
+
+  // Non-secret settings. Secrets are set with `wrangler secret put` and never appear in this file or in client code:
+  //   wrangler secret put ANTHROPIC_API_KEY     (AI_PROVIDER=anthropic)
+  //   wrangler secret put GROQ_API_KEY          (AI_PROVIDER=groq)
+  //   wrangler secret put ADMIN_TOKEN           (optional: protects POST /api/admin/shared)
+  //   wrangler secret put MAX_SHARED_SECRET     (optional: enables the secret schedule of rare shared events)
+  // Set ONE provider below. AI_MODEL is optional: leave it unset to use each provider's default
+  // (anthropic: claude-haiku-4-5, groq: llama-3.3-70b-versatile). If you set it, it must match the provider.
+  "vars": {
+    "AI_PROVIDER": "groq"   // "anthropic" | "groq" | "openai" | "gemini" | "openrouter" | "custom"
+    // "AI_MODEL": "llama-3.3-70b-versatile"
+    // "MAX_CONFIG": "{\"limits\":{\"perDayPerClient\":200}}"   // optional JSON override of limits / ai / shared defaults in worker.js
+  }
+
+  // OPTIONAL but recommended in production: durable daily rate limits + admin override of the shared event.
+  // 1) wrangler kv namespace create MAX_KV   2) paste the returned id below and uncomment.
+  // (Free KV plan allows 1,000 writes/day; each AI request writes 2 counters, so use the Workers Paid plan for real traffic.)
+  // ,"kv_namespaces": [{ "binding": "MAX_KV", "id": "<your-kv-namespace-id>" }]
+}

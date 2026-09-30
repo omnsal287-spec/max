@@ -1,0 +1,19 @@
+{
+  "name": "max",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "precache": "node tools/gen-precache.mjs",
+    "dev": "node tools/gen-precache.mjs && wrangler dev",
+    "deploy": "node tools/gen-precache.mjs && wrangler deploy",
+    "build": "node tools/gen-precache.mjs",
+    "check": "node tools/i18n-check.mjs && wrangler deploy --dry-run"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "wrangler": "^4"
+  }
+}
